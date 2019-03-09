@@ -28,3 +28,18 @@ data:
 cat trace.txt | ./flamegraph.pl > /tmp/trace.svg
 firefox file:///tmp/trace.svg
 #+END_SRC
+
+* Questions and Answers
+** What systems does this work on?
+I've tested it with Rust binaries built on OpenBSD. You may have to use a signal other than ~SIGEMT~ to trigger
+stack trace collection if your system does not offer that. Check the ~signal(3)~ man page on your machine to
+see which signals are supported.
+
+** Why don't you just use perf, gprof, callgrind, $TOOL?
+While ~gprof~ is available on OpenBSD, it requires compiler support, which ~rustc~ doesn't have. ~perf~,
+~callgrind~ and friends are not available on OpenBSD to my knowledge.
+
+** Isn't this just the poor man's profiler?
+It sort of is, yes. The difference is that the poor man's profiler attaches to a running process, which is
+problematic from a security viewpoint and that I couldn't get a GDB attached to an already running Rust
+process to create reliable back traces with all requiered symbol information.
