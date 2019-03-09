@@ -52,6 +52,7 @@ def collect_trace(event):
 
     write_profile('trace.txt')
     gdb.execute('continue')
+    gdb.execute('continue')
 
 
 gdb.events.stop.connect(collect_trace)
