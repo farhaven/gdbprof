@@ -1,0 +1,30 @@
+* GDB Profile
+This is a Python script for GDB that can be used to gather stack traces in a format suitable for Brendan Gregg's
+[FlameGraph](https://github.com/brendangregg/FlameGraph).
+
+** How to use
+Build the program you want to use with enough debug information to gather sensible stack snapshots. For example,
+for Rust, you can set the environment variable ~RUSTFLAGS~ to something like ~-C debuginfo=2~. Then, start it
+with GDB and this script loaded:
+
+#+BEGIN_SRC sh
+gdb -ex 'source /path/to/gdbprofile.py' -ex run /path/to/my-binary
+#+END_SRC
+
+The program will then start running as usual. In a separate terminal, send the signal ~SIGEMT~ to the process
+each time you want to grab a snapshot of the stack:
+
+#+BEGIN_SRC sh
+while sleep 0.1; do
+  kill -EMT $(pgrep my-binary)
+done
+#+END_SRC
+
+This will tacke stack samples at roughly 10 Hz. Each time a snapshot is gathered, profiling data is written to
+~trace.txt~ in GDB's working directory. You can then use FlameGraph to create a visualization of the profiling
+data:
+
+#+BEGIN_SRC sh
+cat trace.txt | ./flamegraph.pl > /tmp/trace.svg
+firefox file:///tmp/trace.svg
+#+END_SRC
