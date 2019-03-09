@@ -1,6 +1,6 @@
 * GDB Profile
 This is a Python script for GDB that can be used to gather stack traces in a format suitable for Brendan Gregg's
-(FlameGraph)[https://github.com/brendangregg/FlameGraph].
+[[https://github.com/brendangregg/FlameGraph][FlameGraph]].
 
 ** How to use
 Build the program you want to use with enough debug information to gather sensible stack snapshots. For example,
