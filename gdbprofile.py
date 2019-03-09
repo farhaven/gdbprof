@@ -30,7 +30,8 @@ def write_profile(fname):
             for frame in trace:
                 res.append(str(frame))
             res = reversed(res)
-            print(callcount, '|', ",".join(res), file=fh)
+            print(";".join(res), callcount, file=fh)
+            #  print(callcount, '|', ",".join(res), file=fh)
 
 
 def collect_trace(event):
